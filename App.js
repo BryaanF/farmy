@@ -1,85 +1,126 @@
-import React from "react";
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NativeBaseProvider, StatusBar } from "native-base";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import {
-  Text,
-  Link,
-  HStack,
-  Center,
-  Heading,
-  Switch,
-  useColorMode,
-  NativeBaseProvider,
-  extendTheme,
-  VStack,
-  Box,
-} from "native-base";
-import NativeBaseIcon from "./components/NativeBaseIcon";
-import { Platform } from "react-native";
+  AboutScreen,
+  HomeScreen,
+  Semangka,
+  Melon,
+  Tebu,
+  DetailFromDetail,
+} from "./screens";
 
-// Define the config
-const config = {
-  useSystemColorMode: false,
-  initialColorMode: "dark",
+const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
+
+const BottomNavigator = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={() => ({
+        headerShown: false,
+        tabBarActiveTintColor: "#64BA59",
+        tabBarInactiveTintColor: "#C4C4C4",
+        tabBarStyle: { height: 65 },
+        tabBarIconStyle: { marginTop: 10 },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          marginBottom: 10,
+        },
+        unmountOnBlur: true,
+      })}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: "Home",
+          tabBarIcon: ({ color, size }) => {
+            return <Ionicons name="leaf" size={size} color={color} />;
+          },
+        }}
+      />
+      <Tab.Screen
+        name="About"
+        component={AboutScreen}
+        options={{
+          tabBarLabel: "About",
+          tabBarIcon: ({ color, size }) => {
+            return <Ionicons name="person" size={size} color={color} />;
+          },
+        }}
+      />
+    </Tab.Navigator>
+  );
 };
 
-// extend the theme
-export const theme = extendTheme({ config });
-
-export default function App() {
+const App = () => {
   return (
     <NativeBaseProvider>
-      <Center
-        _dark={{ bg: "blueGray.900" }}
-        _light={{ bg: "blueGray.50" }}
-        px={4}
-        flex={1}
-      >
-        <VStack space={5} alignItems="center">
-          <NativeBaseIcon />
-          <Heading size="lg">Welcome to NativeBase</Heading>
-          <HStack space={2} alignItems="center">
-            <Text>Edit</Text>
-            <Box
-              _web={{
-                _text: {
-                  fontFamily: "monospace",
-                  fontSize: "sm",
-                },
-              }}
-              px={2}
-              py={1}
-              _dark={{ bg: "blueGray.800" }}
-              _light={{ bg: "blueGray.200" }}
-            >
-              App.js
-            </Box>
-            <Text>and save to reload.</Text>
-          </HStack>
-          <Link href="https://docs.nativebase.io" isExternal>
-            <Text color="primary.500" underline fontSize={"xl"}>
-              Learn NativeBase
-            </Text>
-          </Link>
-          <ToggleDarkMode />
-        </VStack>
-      </Center>
+      <StatusBar />
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="RootScreen"
+            component={BottomNavigator}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Semangka"
+            component={Semangka}
+            options={{
+              headerTitle: "",
+              headerShadowVisible: false,
+              headerStyle: {
+                shadowColor: "transparent",
+                backgroundColor: "#f2f2f2",
+              },
+            }}
+          />
+          <Stack.Screen
+            name="Melon"
+            component={Melon}
+            options={{
+              headerTitle: "",
+              headerShadowVisible: false,
+              headerStyle: {
+                shadowColor: "transparent",
+                backgroundColor: "#f2f2f2",
+              },
+            }}
+          />
+          <Stack.Screen
+            name="Tebu"
+            component={Tebu}
+            options={{
+              headerTitle: "",
+              headerShadowVisible: false,
+              headerStyle: {
+                shadowColor: "transparent",
+                backgroundColor: "#f2f2f2",
+              },
+            }}
+          />
+          <Stack.Screen
+            name="DetailFromDetail"
+            component={DetailFromDetail}
+            options={{
+              headerTitle: "",
+              headerShadowVisible: false,
+              headerStyle: {
+                shadowColor: "transparent",
+                backgroundColor: "#f2f2f2",
+              },
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
     </NativeBaseProvider>
   );
-}
+};
 
-// Color Switch Component
-function ToggleDarkMode() {
-  const { colorMode, toggleColorMode } = useColorMode();
-  return (
-    <HStack space={2} alignItems="center">
-      <Text>Dark</Text>
-      <Switch
-        isChecked={colorMode === "light"}
-        onToggle={toggleColorMode}
-        aria-label={
-          colorMode === "light" ? "switch to dark mode" : "switch to light mode"
-        }
-      />
-      <Text>Light</Text>
-    </HStack>
-  );
-}
+export default App;
